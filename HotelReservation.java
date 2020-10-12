@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 public class HotelReservation {
 
-	private final static Hotel LAKEWOOD = new Hotel("Lakewood", 110, 90);
-	private final static Hotel BRIDGEWOOD = new Hotel("BridgeWood", 150, 50);
-	private final static Hotel RIDGEWOOD = new Hotel("Ridgewood", 220, 150);
+	private final static Hotel LAKEWOOD = new Hotel("Lakewood", 110, 90, 3);
+	private final static Hotel BRIDGEWOOD = new Hotel("BridgeWood", 150, 50, 4);
+	private final static Hotel RIDGEWOOD = new Hotel("Ridgewood", 220, 150, 5);
 
 	static List<Hotel> hotelList = new ArrayList<>() {
 		{
@@ -67,13 +67,10 @@ public class HotelReservation {
 		List<Long> rentList = hotelList.stream().map(hotel -> rentCalculate(hotel, days, weekendDays))
 				.collect(Collectors.toList());
 		minRent = Collections.min(rentList);
-		List<Hotel> cheapestHotel = hotelList.stream()
-				.filter(hotel -> rentCalculate(hotel, days, weekendDays) == minRent).collect(Collectors.toList());
+		Hotel cheapestHotel = hotelList.stream().filter(hotel -> rentCalculate(hotel, days, weekendDays) == minRent)
+				.findFirst().orElse(null);
 
-		System.out.print("Cheapest Hotel(s): ");
-		for (Hotel hotel : cheapestHotel)
-			System.out.print(hotel.getName() + " ");
-		System.out.println("with Total Cost: $" + minRent);
+		System.out.println("Cheapest Hotel: " + cheapestHotel.getName() + ", Total Cost: $" + minRent);
 	}
 
 	public static void main(String[] args) throws ParseException {

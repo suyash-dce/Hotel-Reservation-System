@@ -3,15 +3,16 @@ package com.capgemini.hotelreservation;
 public class Hotel {
 	private String name;
 	private int regularRates;
-	private int weekendRate;
+	private int weekendRate, ratings;
 	public Hotel() {
 	}
 	
 	//Parameterized Constructor
-	public Hotel(String name, int regularRates, int weekedRate) {
+	public Hotel(String name, int regularRates, int weekedRate, int ratings) {
 		this.name = name;
 		this.regularRates = regularRates;
 		this.weekendRate = weekedRate;
+		this.ratings = ratings;
 	}
 	
 	//Name Getter
@@ -42,5 +43,15 @@ public class Hotel {
 	//Setter for Weekend Rates
 	public void setWeekendRates(int regularRates) {
 		this.weekendRate = regularRates;
+	}
+	
+	//Getter for Ratings
+	public int getRatings() {
+		return ratings;
+	}
+	
+	//Setter for Ratings
+	public void setRatings(int ratings) {
+		this.ratings = ratings;
 	}
 }
