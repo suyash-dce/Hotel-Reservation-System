@@ -13,6 +13,7 @@ public class HotelReservation {
 	private final static Hotel BRIDGEWOOD = new Hotel("BridgeWood", 150, 50, 110, 50, 4);
 	private final static Hotel RIDGEWOOD = new Hotel("Ridgewood", 220, 150, 100, 40, 5);
 
+	@SuppressWarnings("serial")
 	static List<Hotel> hotelList = new ArrayList<>() {
 		{
 			add(LAKEWOOD);
@@ -32,7 +33,6 @@ public class HotelReservation {
 		} catch (ParseException e) {
 			System.err.println("Wrong Date format. Enter like -> 5Jan2011");
 		}
-
 		return (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24 + 1;
 	}
 
@@ -128,6 +128,7 @@ public class HotelReservation {
 		String startDate = "11Sep2020";
 		String endDate = "12Sep2020";
 		HotelReservation hotelReservation = new HotelReservation();
+		// Already done using java stream
 		hotelReservation.cheapestBestRatedHotelReward(startDate, endDate);
 	}
 }
