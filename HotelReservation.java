@@ -80,11 +80,19 @@ public class HotelReservation {
 		System.out.println(", Total Cost: $" + minRent);
 	}
 
+	public void bestRatedHotel(String start, String end) throws ParseException {
+		Hotel bestRatedHotel = hotelList.stream().max(Comparator.comparing(Hotel::getRatings)).orElse(null);
+
+		System.out.println("Best Rated Hotel: " + bestRatedHotel.getName() + ", Total Cost: $"
+				+ rentCalculate(bestRatedHotel, regularDays(start, end), weekendDays(start, end)));
+	}
+
 	public static void main(String[] args) throws ParseException {
 		System.out.println("Welcome to Hotel Reservation Program");
 		String startDate = "11Sep2020";
 		String endDate = "12Sep2020";
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.cheapestHotel(startDate, endDate);
+		hotelReservation.bestRatedHotel(startDate, endDate);
 	}
 }
