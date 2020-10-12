@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 public class HotelReservation {
 
-	private final static Hotel LAKEWOOD = new Hotel("Lakewood", 110);
-	private final static Hotel BRIDGEWOOD = new Hotel("BridgeWood", 150);
-	private final static Hotel RIDGEWOOD = new Hotel("Ridgewood", 220);
+	private final static Hotel LAKEWOOD = new Hotel("Lakewood", 110, 90);
+	private final static Hotel BRIDGEWOOD = new Hotel("BridgeWood", 150, 50);
+	private final static Hotel RIDGEWOOD = new Hotel("Ridgewood", 220, 150);
 
 	static List<Hotel> hotelList = new ArrayList<>() {
 		{
@@ -39,7 +39,7 @@ public class HotelReservation {
 		Hotel cheapestHotel = hotelList.stream().filter(hotel -> hotel.getRegularRates() * days == minRent).findFirst()
 				.orElse(null);
 
-		System.out.println("Cheapest Hotel: " + cheapestHotel.getName() + ", Total Cost: " + minRent);
+		System.out.println("Cheapest Hotel: " + cheapestHotel.getName() + ", Total Cost: $" + minRent);
 	}
 
 	public static void main(String[] args) throws ParseException {
