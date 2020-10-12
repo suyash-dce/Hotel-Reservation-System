@@ -128,7 +128,7 @@ public class HotelReservation {
 		String startDate = "11Sep2020";
 		String endDate = "12Sep2020";
 		HotelReservation hotelReservation = new HotelReservation();
-		// Already done using java stream
-		hotelReservation.cheapestBestRatedHotelReward(startDate, endDate);
+		// Already done using java stream, date and time
+		hotelReservation.cheapestBestRatedHotelRegular(startDate, endDate);
 	}
 }
