@@ -2,6 +2,8 @@ package com.capgemini.hotelreservation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.temporal.ChronoField;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,9 +21,35 @@ public class HotelReservation {
 		}
 	};
 
-	public static void cheapestHotel(String start, String end) throws ParseException {
+	public long weekendDays(Date startDate, Date endDate) {
+		LocalDate s = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate e = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		long weekendDays = 0;
+		for (LocalDate date = s; date.isBefore(e.plusDays(1)); date = date.plusDays(1)) {
+			DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK));
+			switch (day) {
+			case SATURDAY:
+				weekendDays++;
+				break;
+			case SUNDAY:
+				weekendDays++;
+				break;
+			default:
+				break;
+			}
+		}
+		return weekendDays;
+	}
+
+	public long rentCalculate(Hotel hotel, long days, long weekendDays) {
+
+		return hotel.getRegularRates() * (days - weekendDays) + hotel.getWeekendRates() * weekendDays;
+	}
+
+	public void cheapestHotel(String start, String end) throws ParseException {
 		long days, minRent;
-		Date startDate = null, endDate = null;
+		Date startDate = null;
+		Date endDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMMyyyy");
 		sdf.setLenient(false);
 
@@ -31,23 +59,28 @@ public class HotelReservation {
 		} catch (ParseException e) {
 			System.err.println("Wrong Date format. Enter like 5 Jan 2011");
 		}
+
 		days = (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24 + 1;
 
-		List<Long> rentList = hotelList.stream().map(hotel -> hotel.getRegularRates() * days)
+		long weekendDays = weekendDays(startDate, endDate);
+		System.out.println(weekendDays);
+		List<Long> rentList = hotelList.stream().map(hotel -> rentCalculate(hotel, days, weekendDays))
 				.collect(Collectors.toList());
 		minRent = Collections.min(rentList);
-		Hotel cheapestHotel = hotelList.stream().filter(hotel -> hotel.getRegularRates() * days == minRent).findFirst()
-				.orElse(null);
+		List<Hotel> cheapestHotel = hotelList.stream()
+				.filter(hotel -> rentCalculate(hotel, days, weekendDays) == minRent).collect(Collectors.toList());
 
-		System.out.println("Cheapest Hotel: " + cheapestHotel.getName() + ", Total Cost: $" + minRent);
+		System.out.print("Cheapest Hotel(s): ");
+		for (Hotel hotel : cheapestHotel)
+			System.out.print(hotel.getName() + " ");
+		System.out.println("with Total Cost: $" + minRent);
 	}
 
 	public static void main(String[] args) throws ParseException {
 		System.out.println("Welcome to Hotel Reservation Program");
 		Scanner sc = new Scanner(System.in);
-
-		cheapestHotel(sc.next(), sc.next());
-
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.cheapestHotel(sc.next(), sc.next());
 		sc.close();
 	}
 }
